@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySync | Track, Achieve, Inspire</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a90e2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader"></div>
+        <p>Loading StudySync...</p>
+    </div>
+
+    <!-- Login/Register Modal -->
+    <div id="auth-modal" class="modal active">
+        <div class="modal-content">
+            <h2 id="auth-title">Welcome to StudySync</h2>
+            <form id="auth-form">
+                <div id="name-field" class="form-group" style="display: none;">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" id="auth-submit" class="btn-primary">Login</button>
+                <p class="auth-switch">
+                    <span id="auth-switch-text">Don't have an account?</span>
+                    <a href="#" id="auth-switch-link">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>StudySync</h1>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="icon-btn" title="Toggle Theme">🌙</button>
+                    <button id="notifications-btn" class="icon-btn" title="Notifications">🔔</button>
+                    <div class="user-menu">
+                        <button id="user-menu-btn" class="user-avatar">
+                            <span id="user-initial">U</span>
+                        </button>
+                        <div id="user-dropdown" class="dropdown-menu">
+                            <a href="#" id="profile-btn">Profile</a>
+                            <a href="#" id="settings-btn">Settings</a>
+                            <a href="#" id="logout-btn">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quote-banner">
+                <p id="daily-quote">"Success is the sum of small efforts, repeated day in and day out."</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-container">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="nav-item" data-section="goals">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">Goals</span>
+                </button>
+                <button class="nav-item" data-section="timer">
+                    <span class="nav-icon">⏰</span>
+                    <span class="nav-text">Timer</span>
+                </button>
+                <button class="nav-item" data-section="journal">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">Journal</span>
+                </button>
+                <button class="nav-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </button>
+                <button class="nav-item" data-section="resources">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Resources</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <div class="header-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" id="total-study-time">0h</span>
+                            <span class="stat-label">Study Time</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="goals-completed">0</span>
+                            <span class="stat-label">Goals Done</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="current-streak">0</span>
+                            <span class="stat-label">Day Streak</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Today's Goals -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Today's Goals</h3>
+                            <button class="btn-small" onclick="showSection('goals')">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <ul id="today-goals" class="goal-list"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Progress -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Weekly Progress</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="progress-grid">
+                                <div class="progress-item">
+                                    <span class="subject-name">Mathematics</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                    <span class="progress-percent">75%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="subject-name">Physics</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span class="progress-percent">60%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="subject-name">Electronics</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                    <span class="progress-percent">45%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="subject-name">Python</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 30%"></div>
+                                    </div>
+                                    <span class="progress-percent">30%</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="subject-name">Communication</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 90%"></div>
+                                    </div>
+                                    <span class="progress-percent">90%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul id="recent-activity" class="activity-list"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Study Calendar -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Study Calendar</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="study-calendar" class="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Section -->
+            <section id="goals" class="section">
+                <div class="section-header">
+                    <h2>Study Goals</h2>
+                    <button class="btn-primary" id="add-goal-btn">Add New Goal</button>
+                </div>
+
+                <div class="goals-container">
+                    <div class="goals-tabs">
+                        <button class="tab-btn active" data-tab="all">All Goals</button>
+                        <button class="tab-btn" data-tab="today">Today</button>
+                        <button class="tab-btn" data-tab="week">This Week</button>
+                        <button class="tab-btn" data-tab="completed">Completed</button>
+                    </div>
+
+                    <div class="goals-list">
+                        <div id="goals-container"></div>
+                    </div>
+                </div>
+
+                <!-- Add Goal Modal -->
+                <div id="goal-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Add New Goal</h3>
+                            <button class="modal-close">&times;</button>
+                        </div>
+                        <form id="goal-form">
+                            <div class="form-group">
+                                <label for="goal-title">Goal Title</label>
+                                <input type="text" id="goal-title" placeholder="Enter your goal" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="goal-subject">Subject</label>
+                                <select id="goal-subject" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="mathematics">Mathematics</option>
+                                    <option value="physics">Physics</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="python">Python</option>
+                                    <option value="communication">Communication</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="goal-deadline">Deadline</label>
+                                <input type="date" id="goal-deadline" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="goal-priority">Priority</label>
+                                <select id="goal-priority" required>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="goal-description">Description (Optional)</label>
+                                <textarea id="goal-description" placeholder="Add more details..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancel-goal">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Goal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timer Section -->
+            <section id="timer" class="section">
+                <div class="section-header">
+                    <h2>Study Timer</h2>
+                </div>
+
+                <div class="timer-container">
+                    <div class="timer-card">
+                        <div class="timer-display">
+                            <div class="time-circle">
+                                <svg class="progress-ring" width="200" height="200">
+                                    <circle class="progress-ring-circle" cx="100" cy="100" r="80"></circle>
+                                </svg>
+                                <div class="time-text">
+                                    <span id="timer-display">25:00</span>
+                                    <span id="timer-mode">Focus Time</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timer-controls">
+                            <button id="start-timer" class="btn-primary timer-btn">Start</button>
+                            <button id="pause-timer" class="btn-secondary timer-btn" style="display: none;">Pause</button>
+                            <button id="reset-timer" class="btn-secondary timer-btn">Reset</button>
+                        </div>
+
+                        <div class="timer-settings">
+                            <div class="setting-group">
+                                <label>Focus Time</label>
+                                <input type="range" id="focus-time" min="15" max="60" value="25">
+                                <span id="focus-display">25 min</span>
+                            </div>
+                            <div class="setting-group">
+                                <label>Break Time</label>
+                                <input type="range" id="break-time" min="5" max="20" value="5">
+                                <span id="break-display">5 min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="session-stats">
+                        <h3>Today's Sessions</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number" id="sessions-count">0</span>
+                                <span class="stat-label">Sessions</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="focus-time-total">0m</span>
+                                <span class="stat-label">Focus Time</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="break-time-total">0m</span>
+                                <span class="stat-label">Break Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Journal Section -->
+            <section id="journal" class="section">
+                <div class="section-header">
+                    <h2>Study Journal</h2>
+                    <button class="btn-primary" id="add-entry-btn">New Entry</button>
+                </div>
+
+                <div class="journal-container">
+                    <div class="journal-sidebar">
+                        <div class="calendar-mini">
+                            <h4>Calendar</h4>
+                            <div id="journal-calendar"></div>
+                        </div>
+                        <div class="mood-tracker">
+                            <h4>Mood Tracker</h4>
+                            <div class="mood-buttons">
+                                <button class="mood-btn" data-mood="great">😄</button>
+                                <button class="mood-btn" data-mood="good">😊</button>
+                                <button class="mood-btn" data-mood="okay">😐</button>
+                                <button class="mood-btn" data-mood="bad">😟</button>
+                                <button class="mood-btn" data-mood="terrible">😢</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="journal-main">
+                        <div id="journal-entries"></div>
+                    </div>
+                </div>
+
+                <!-- Journal Entry Modal -->
+                <div id="journal-modal" class="modal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3>New Journal Entry</h3>
+                            <button class="modal-close">&times;</button>
+                        </div>
+                        <form id="journal-form">
+                            <div class="form-group">
+                                <label for="entry-mood">How are you feeling?</label>
+                                <div class="mood-selector">
+                                    <input type="radio" id="mood-great" name="mood" value="great">
+                                    <label for="mood-great">😄 Great</label>
+                                    <input type="radio" id="mood-good" name="mood" value="good">
+                                    <label for="mood-good">😊 Good</label>
+                                    <input type="radio" id="mood-okay" name="mood" value="okay">
+                                    <label for="mood-okay">😐 Okay</label>
+                                    <input type="radio" id="mood-bad" name="mood" value="bad">
+                                    <label for="mood-bad">😟 Bad</label>
+                                    <input type="radio" id="mood-terrible" name="mood" value="terrible">
+                                    <label for="mood-terrible">😢 Terrible</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="entry-content">What did you study today?</label>
+                                <textarea id="entry-content" rows="6" placeholder="Describe your study session, what you learned, challenges faced, achievements..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="entry-tags">Tags (comma separated)</label>
+                                <input type="text" id="entry-tags" placeholder="mathematics, calculus, difficult">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancel-entry">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Entry</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="section">
+                <div class="section-header">
+                    <h2>Analytics & Insights</h2>
+                    <div class="time-filter">
+                        <button class="filter-btn active" data-period="week">Week</button>
+                        <button class="filter-btn" data-period="month">Month</button>
+                        <button class="filter-btn" data-period="year">Year</button>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="card">
+                        <h3>Study Time Distribution</h3>
+                        <canvas id="subject-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Daily Study Hours</h3>
+                        <canvas id="daily-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Goal Completion Rate</h3>
+                        <canvas id="goals-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Study Insights</h3>
+                        <div class="insight-list">
+                            <div class="insight-item">
+                                <span class="insight-icon">💡</span>
+                                <span class="insight-text">Your most productive time is 10 AM - 12 PM</span>
+                            </div>
+                            <div class="insight-item">
+                                <span class="insight-icon">📈</span>
+                                <span class="insight-text">Mathematics progress improved by 25% this week</span>
+                            </div>
+                            <div class="insight-item">
+                                <span class="insight-icon">🎯</span>
+                                <span class="insight-text">You're on track to complete 90% of your weekly goals</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources" class="section">
+                <div class="section-header">
+                    <h2>Study Resources</h2>
+                    <div class="search-bar">
+                        <input type="text" id="resource-search" placeholder="Search resources...">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                </div>
+
+                <div class="resources-container">
+                    <div class="resource-tabs">
+                        <button class="tab-btn active" data-tab="all">All Resources</button>
+                        <button class="tab-btn" data-tab="mathematics">Mathematics</button>
+                        <button class="tab-btn" data-tab="physics">Physics</button>
+                        <button class="tab-btn" data-tab="electronics">Electronics</button>
+                        <button class="tab-btn" data-tab="python">Python</button>
+                        <button class="tab-btn" data-tab="communication">Communication</button>
+                    </div>
+
+                    <div class="resources-grid">
+                        <!-- Mathematics Resources -->
+                        <div class="resource-card" data-subject="mathematics">
+                            <div class="resource-header">
+                                <h4>NCERT Mathematics</h4>
+                                <span class="resource-type">Textbook</span>
+                            </div>
+                            <p>Complete NCERT Class 12 Mathematics textbooks with solutions</p>
+                            <div class="resource-actions">
+                                <a href="https://ncert.nic.in/textbook.php" target="_blank" class="btn-small">Open</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <div class="resource-card" data-subject="mathematics">
+                            <div class="resource-header">
+                                <h4>NPTEL Engineering Mathematics</h4>
+                                <span class="resource-type">Video Course</span>
+                            </div>
+                            <p>Comprehensive video lectures on engineering mathematics</p>
+                            <div class="resource-actions">
+                                <a href="https://nptel.ac.in/courses/111/106/111106094/" target="_blank" class="btn-small">Watch</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <!-- Physics Resources -->
+                        <div class="resource-card" data-subject="physics">
+                            <div class="resource-header">
+                                <h4>MIT OpenCourseWare Physics</h4>
+                                <span class="resource-type">Course</span>
+                            </div>
+                            <p>Classical Mechanics course from MIT</p>
+                            <div class="resource-actions">
+                                <a href="https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/" target="_blank" class="btn-small">Open</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <!-- Electronics Resources -->
+                        <div class="resource-card" data-subject="electronics">
+                            <div class="resource-header">
+                                <h4>Electronic Devices & Circuit Theory</h4>
+                                <span class="resource-type">Textbook</span>
+                            </div>
+                            <p>Boylestad & Nashelsky comprehensive electronics textbook</p>
+                            <div class="resource-actions">
+                                <button class="btn-small">View PDF</button>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <!-- Python Resources -->
+                        <div class="resource-card" data-subject="python">
+                            <div class="resource-header">
+                                <h4>Python for Everybody</h4>
+                                <span class="resource-type">Course</span>
+                            </div>
+                            <p>Complete Python programming course by Dr. Charles Severance</p>
+                            <div class="resource-actions">
+                                <a href="https://www.coursera.org/learn/python" target="_blank" class="btn-small">Enroll</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <div class="resource-card" data-subject="python">
+                            <div class="resource-header">
+                                <h4>Automate the Boring Stuff</h4>
+                                <span class="resource-type">Book</span>
+                            </div>
+                            <p>Practical Python programming for automation</p>
+                            <div class="resource-actions">
+                                <a href="https://automatetheboringstuff.com/" target="_blank" class="btn-small">Read</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+
+                        <!-- Communication Resources -->
+                        <div class="resource-card" data-subject="communication">
+                            <div class="resource-header">
+                                <h4>Technical Communication Guide</h4>
+                                <span class="resource-type">Guide</span>
+                            </div>
+                            <p>Professional email and technical writing for engineers</p>
+                            <div class="resource-actions">
+                                <a href="https://eng.libretexts.org/" target="_blank" class="btn-small">Read</a>
+                                <button class="btn-small bookmark-btn">⭐</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
